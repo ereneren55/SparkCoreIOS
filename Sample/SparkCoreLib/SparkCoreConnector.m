@@ -37,7 +37,7 @@
 
 //  initiator that uses the initWithAccessToken:andDeviceId: initiator and then sets the functionName property
 -(instancetype)initWithAccessToken:(NSString *)token deviceId:(NSString *)devId andFunctionName:(NSString*)function{
-    self = [self initWithAccessToken:token andDeviceId:deviceId];
+    self = [self initWithAccessToken:token andDeviceId:devId];
     if (self) {
         self.functionName = function;
     }
@@ -56,7 +56,7 @@
 //  Connects to the Spark API
 -(void)connectWithCompletionHandler:(connectClosure)handler; {
     NSString *mUrl = [NSString stringWithFormat:@"%@/%@/%@",self.baseUrl,self.deviceId,self.functionName];
-
+    NSLog(@"mUrl:  %@", mUrl);
     NSURL *url = [NSURL URLWithString:mUrl];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration delegate:nil delegateQueue:self.queue];
     
