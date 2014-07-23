@@ -29,6 +29,7 @@ Since the library is only one class, I would recommend simply coping the header 
 
 The sample project turns the user led on/off as you press the button.  To try the sample, you will need to begin by flashing the following code to your Spark Core:
 
+```
 int userLed = D7;
 int ledStatus = 0;
 
@@ -60,6 +61,7 @@ int testerControl(String command)
     ledStatus = 0;
     return -1;
 }
+```
 
 You will need to change the accessToken and deviceID in the ViewController.m file.  Look for this line:
 
