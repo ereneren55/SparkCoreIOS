@@ -7,80 +7,86 @@
 //
 
 #import "SparkCoreConnector.h"
+#import "SparkTransactionGet.h"
+#import "SparkTransactionPost.h"
 
 @implementation SparkCoreConnector
 
-@synthesize sessionConfiguration,queue, baseUrl, accessToken, deviceId, functionName;
 
-// Default initiator that sets everything to default values
--(instancetype)init {
-    self.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.queue = [NSOperationQueue currentQueue];
-    self.baseUrl = @"https://api.spark.io/v1/devices";
-    self.accessToken = @"";
-    self.deviceId = @"";
-    self.parameters = @"";
-    self.functionName = @"";
-    return self;
-}
-
-//  initiator that sets everything to default using the default init method
-//  then sets the accessToken and deviceId properties
--(instancetype)initWithAccessToken:(NSString *)token andDeviceId:(NSString *)devId {
-    self = [self init];
-    if (self) {
-        self.accessToken = token;
-        self.deviceId = devId;
++(void)connectToSparkAPIWithTransaction:(SparkTransaction *)transaction andHandler:(connectClosure)handler {
+    if (transaction.transactionType == GET) {
+        [self getConnectionWithTransaction:(SparkTransactionGet *)transaction  andHandler:handler];
+    } else if (transaction.transactionType == POST) {
+        [self postConnectionWithTransaction:(SparkTransactionPost *)transaction andHandler:handler];
+    } else {
+        NSString *description = NSLocalizedString(@"Unknown transaction type", @"");
+        NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey : description};
+        NSError *error = [[NSError alloc] initWithDomain:@"SparkCoreConnectorErrorDomain" code:-1 userInfo:errorDictionary];
+        handler(nil,nil,error);
     }
-    return self;
 }
 
-//  initiator that uses the initWithAccessToken:andDeviceId: initiator and then sets the functionName property
--(instancetype)initWithAccessToken:(NSString *)token deviceId:(NSString *)devId andFunctionName:(NSString*)function{
-    self = [self initWithAccessToken:token andDeviceId:devId];
-    if (self) {
-        self.functionName = function;
++(void)getConnectionWithTransaction:(SparkTransactionGet *)transaction andHandler:(connectClosure)handler {
+    if (transaction.transactionType == GET) {
+        
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSOperationQueue *queue = [NSOperationQueue currentQueue];
+        
+        NSString *mUrl = [NSString stringWithFormat:@"%@/%@/%@?access_token=%@",transaction.baseUrl,transaction.deviceId, transaction.property, transaction.accessToken];
+        
+        NSURL *url = [NSURL URLWithString:mUrl];
+        NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:queue];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        request.HTTPMethod = @"GET";
+        
+        NSURLSessionDataTask *uploadTask = [urlSession dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+            if (error == nil) {
+                
+                NSDictionary *retData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                handler(response,retData,error);
+            } else {
+                handler(response,nil,error);
+            }
+        }];
+        
+        
+        [uploadTask resume];
     }
-    return self;
 }
 
-//  initiator that uses the initWithAccessToken:deviceId:andFunctionName: initiator and then sets the parameters property
--(instancetype)initWithAccessToken:(NSString *)token deviceId:(NSString *)devId functionName:(NSString *)function andParameters:(NSString*)params{
-    self = [self initWithAccessToken:token deviceId:devId andFunctionName:function];
-    if (self) {
-        self.parameters = params;
++(void)postConnectionWithTransaction:(SparkTransactionPost *)transaction andHandler:(connectClosure)handler {
+    if (transaction.transactionType == POST) {
+        NSString *mUrl = [NSString stringWithFormat:@"%@/%@/%@",transaction.baseUrl,transaction.deviceId, transaction.functionName];
+        
+        NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSOperationQueue *queue = [NSOperationQueue currentQueue];
+        NSURL *url = [NSURL URLWithString:mUrl];
+        NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:nil delegateQueue:queue];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        NSString *params = [NSString stringWithFormat:@"access_token=%@&params=%@",transaction.accessToken,transaction.parameters];
+        
+        request.HTTPMethod = @"POST";
+        [request setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSURLSessionDataTask *uploadTask = [urlSession dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+            if (error == nil) {
+                
+                NSDictionary *retData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                handler(response,retData,error);
+            } else {
+                handler(response,nil,error);
+            }
+        }];
+        
+        
+        [uploadTask resume];
     }
-    return self;
 }
 
-//  Connects to the Spark API
--(void)connectWithCompletionHandler:(connectClosure)handler; {
-    NSString *mUrl = [NSString stringWithFormat:@"%@/%@/%@",self.baseUrl,self.deviceId,self.functionName];
-    NSLog(@"mUrl:  %@", mUrl);
-    NSURL *url = [NSURL URLWithString:mUrl];
-    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration delegate:nil delegateQueue:self.queue];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    NSString *params = [NSString stringWithFormat:@"access_token=%@&params=%@",self.accessToken,self.parameters];
-
-    request.HTTPMethod = @"POST";
-    [request setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    
-    NSURLSessionDataTask *uploadTask = [urlSession dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        if (error == nil) {
- 
-            NSDictionary *retData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            handler(response,retData,error);
-        } else {
-            handler(response,nil,error);
-        }
-    }];
-    
-    
-    [uploadTask resume];
-}
 
 
 @end
