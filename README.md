@@ -1,28 +1,35 @@
 Spark Core iOS Library
 =====================
 This project will create a very simple Objective-C library that can be used to communicate with the Spark Core API service.  Currently the library is working but I would like to add more bells and whistles as well as more error checking.
+Update 1  -  Rewrote the library today to make it easier to use for applications that need multiple requests.
 
 ---------------
-## Initiators
+## Spark Transactions
 
 Here is the list of the initiators that come with the library
 
-*  -(instancetype)init  - Default initiator that sets all properties to the default value
-*  -(instancetype)initWithAccessToken:andDeviceId:  - Initiator that sets everything to default using the default init method then sets the accessToken and deviceId properties
-*  -(instancetype)initWithAccessToken:token deviceId:andFunctionName: - initiator that uses the initWithAccessToken:andDeviceId: Initiator and then sets the functionName property
-*  -(instancetype)initWithAccessToken:token deviceId:functionName:andParameters: -  Initiator that uses the initWithAccessToken:deviceId:andFunctionName: initiator and then sets the parameters property
+*  SparkTransactionGet - Used to create a GET request to the Spark API
+*  SparkTransactionPost - Used to create a POST request to the Spark API
 
 ---------------
 ## Methods
 
 Here is the one method that is currently implemented
 
-*  -(void)connectWithCompletionHandler: - Connects and sends the POST request to the Spark API
+*  -(void)connectToSparkAPIWithTransaction:andHandler: - Sends the transaction to the Spark API
 
 ---------------
 ## Installation
 
-Since the library is only one class, I would recommend simply coping the header and implementation to your project.  Once the project begins to grow I will probably change this.
+You will need to copy the following files to your project:
+  - SparkTransaction.h
+  - SparkTransaction.m
+  - SparkTransactionGet.h
+  - SparkTransactionGet.m
+  - SparkTransactionPost.h
+  - SparkTransactionPost.m
+  - SparkCoreConnector.h
+  - SparkCoreConnector.m
 
 ---------------
 ## Sample
@@ -30,36 +37,46 @@ Since the library is only one class, I would recommend simply coping the header 
 The sample project turns the user led on/off as you press the button.  To try the sample, you will need to begin by flashing the following code to your Spark Core:
 
 ```
-int userLed = D7;
-int ledStatus = 0;
+int ledUser = D7;
+int led1 = D0;
+int led2 = D5;
+int myvar = 0;
 
-void setup()
-{
-	Spark.function("tester", testerControl);
-	pinMode(userLed, OUTPUT);
+void setup() {
+    Spark.function("led", ledController);
+    
+    pinMode(ledUser, OUTPUT);
+    pinMode(led1, OUTPUT);
+    pinMode(led2, OUTPUT);
+    
+    digitalWrite(ledUser, LOW);
+    digitalWrite(led1, LOW);
+    digitalWrite(led2, LOW);
+    
+    Spark.variable("myvar", &myvar, INT);
 }
 
-void loop()
-{
-	//doing nothing
+void loop() {
+    
 }
 
-int testerControl(String command)
+int ledController(String command) 
 {
-    if (ledStatus == 0) 
-	{
-		digitalWrite(userLed, HIGH);
-		ledStatus = 1;
-		return 1;
-	}
-    if (ledStatus == 1)
-    {
-        digitalWrite(userLed, LOW);
-        ledStatus = 0;
-        return 1;
-    }   
-    ledStatus = 0;
-    return -1;
+    myvar = myvar +1;
+    int ledState = 0;
+    int pinNumber = (command.charAt(1) - '0');
+    
+    if (pinNumber != 0 && pinNumber != 5 && pinNumber !=7) {
+        return -1;
+    }
+    
+    if(command.substring(3,7) == "HIGH") ledState = HIGH;
+   else if(command.substring(3,6) == "LOW") ledState = LOW;
+   else return -2;
+    
+    digitalWrite(pinNumber,ledState);
+    
+    return 1;
 }
 ```
 
