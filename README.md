@@ -1,7 +1,11 @@
 Spark Core iOS Library
 =====================
-This project will create a very simple Objective-C library that can be used to communicate with the Spark Core API service.  Currently the library is working but I would like to add more bells and whistles as well as more error checking.
-Update 1  -  Rewrote the library today to make it easier to use for applications that need multiple requests.
+This project will create a very simple Objective-C library that can be used to communicate with the Spark Core API service.  Currently the library is working but I would like to add more bells and whistles as well as more error checking.  
+
+Update 1  -  Rewrote the library today to make it easier to use for applications that need multiple requests.  
+
+I will be writing a post in my blog over the next two days detailing how this library works.  I will post a link here when it is complete.  
+
 
 ---------------
 ## Spark Transactions
