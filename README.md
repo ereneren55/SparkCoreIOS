@@ -87,9 +87,9 @@ int ledController(String command)
 You will need to change the accessToken and deviceID in the ViewController.m file.  Look for this line:  
 
 
-#define ACCESS_TOKEN @"1234564789"  
+define ACCESS_TOKEN @"1234564789"  
 
-#define DEVICE_ID @"my-core"  
+define DEVICE_ID @"my-core"  
 
 
 and update the ACCESS_TOKEN and DEVICE_ID to match your Spark Core.
