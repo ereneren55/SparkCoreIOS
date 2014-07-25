@@ -4,7 +4,7 @@ This project will create a very simple Objective-C library that can be used to c
 
 Update 1  -  Rewrote the library today to make it easier to use for applications that need multiple requests.  
 
-I will be writing a post in my blog over the next two days detailing how this library works.  I will post a link here when it is complete.  
+You can read a tutorial on how to use the library here:  http://myroboticadventure.blogspot.com/2014/07/spark-core-ios-library.html 
 
 
 ---------------
@@ -84,8 +84,12 @@ int ledController(String command)
 }
 ```
 
-You will need to change the accessToken and deviceID in the ViewController.m file.  Look for this line:
+You will need to change the accessToken and deviceID in the ViewController.m file.  Look for this line:  
 
-SparkCoreConnector *spark = [[SparkCoreConnector alloc]initWithAccessToken:@"0123456789abcdef" deviceId:@"myid" functionName:@"tester" andParameters:@"test param"];
 
-and update the accessToken and deviceId to match your Spark Core.
+#define ACCESS_TOKEN @"1234564789"  
+
+#define DEVICE_ID @"my-core"  
+
+
+and update the ACCESS_TOKEN and DEVICE_ID to match your Spark Core.
