@@ -12,8 +12,8 @@
 #import "SparkTransactionGet.h"
 
 
-#define ACCESS_TOKEN @"6ba939bcbd4a241b1d8d564e6c11bdcb5caaebed"
-#define DEVICE_ID @"buddy-core"
+#define ACCESS_TOKEN @"123456789"
+#define DEVICE_ID @"my-core"
 #define FUNCTION @"led"
 #define STATUS_VAR @"ledStatus"
 
