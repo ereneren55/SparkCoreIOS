@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9359AA67-338D-4E85-BEAA-A80ACF413A48</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SparkComparisonApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>924C260E-6443-4B99-81F3-6EB4DC5186D2</key>
+		<string>https://svn.bubblecms.com/svn/mville-data-collection-app-ios</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SparkComparisonApp/SparkComparisonApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>924C260E-6443-4B99-81F3-6EB4DC5186D2</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>924C260E-6443-4B99-81F3-6EB4DC5186D2</key>
+		<string>https://svn.bubblecms.com/svn/mville-data-collection-app-ios</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://svn.bubblecms.com/svn/mville-data-collection-app-ios/SparkComparisonApp/SparkComparisonApp.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>924C260E-6443-4B99-81F3-6EB4DC5186D2</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>924C260E-6443-4B99-81F3-6EB4DC5186D2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iPhone Projects</string>
+		</dict>
+	</array>
+</dict>
+</plist>
